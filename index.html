@@ -25,6 +25,7 @@
       <p class = "admirees"></p>
       <p>Sometimes I'm loud and abrupt, and <a href = "https://twitter.com/fdans/status/615822166827765761" target="_blank">I rant on Twitter a bit too much</a>, but if you want to <a href = "mailto:fdansv@gmail.com">email me</a> I promise I'll be nice.</p>
     </div>
+    <div class = "margintooltip" style = "display:none;"></div>
     <div class = "container end"></div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script>
@@ -40,12 +41,12 @@
       ////////////////////////////////////////////////////
 
       $(document).ready(function () {
-        var admireesJSON = $.getJSON("https://raw.githubusercontent.com/fdansv/admirees/master/admirees.json", function(data){
+        var admireesJSON = $.getJSON("https://raw.githubusercontent.com/fdansv/admirees/master/admirees.json", function(data) {
           var text = data.reduce(function(p,c,i){
             if (i === data.length-1){
               p += "and "
             }
-            p += '<a href = "' + c.url + '" target="_blank">' + c.name 
+            p += '<a href = "' + c.url + '" desc = "' + c.desc + '" target="_blank">' + c.name 
             if (i !== data.length-1){
               p += '</a>, '
             }
@@ -53,6 +54,25 @@
             return p
           }, "Here's some people doing awesome work that you may or may not have heard of, that I enjoy hearing about: ")
           $(".admirees").html(text)
+
+          $("a", ".admirees").hover(function (e) {
+            var parent = $(this.parentElement)
+            var position = parent.position()
+            var tooltip = $('.margintooltip')
+            var width = Math.min(130, position.left)
+            tooltip.css({
+              top: position.top,
+              left: position.left - width- 5,
+              "min-height": parent.height(),
+              width: width
+            })
+            tooltip.text($(this).attr("desc"))
+            tooltip.stop()
+            tooltip.fadeIn({duration:100, queue: false})
+          }, function () {
+            $('.margintooltip').stop()
+            $('.margintooltip').fadeOut({duration:100})
+          })
         })
       })
 
