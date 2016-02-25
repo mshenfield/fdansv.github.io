@@ -23,7 +23,7 @@
       <p>I like traveling to strange places. So far I've traveled to two <a href = "https://en.wikipedia.org/wiki/Nagorno-Karabakh_Republic" target="_blank">globally</a> <a href = "https://en.wikipedia.org/wiki/State_of_Palestine" target="_blank">unrecognised</a> countries. I'm fascinated by isolated lands that somehow end up inhabited. Like the <a href = "https://en.wikipedia.org/wiki/Pitcairn" target="_blank">Pitcairn Islands</a>.</p>
       <p>I have an (un)healthy obsession with Armenia, non-latin alphabets, sandwiches from El Corte Ingl&eacute;s's cafeteria, airplanes, <a href = "https://www.youtube.com/watch?v=kRnM6sLHe1Y" target = "_blank">opera</a>, American standup comedy and Wikipedia.</p>
       <p class = "admirees"></p>
-      <p>Sometimes I'm loud and abrupt, and <a href = "https://twitter.com/fdans/status/615822166827765761" target="_blank">I rant on Twitter a bit too much</a>, but if you want to <a href = "mailto:fdansv@gmail.com">email me</a> I promise I'll be nice.</p>
+      <p>Sometimes <a href = "https://twitter.com/fdans/status/615822166827765761" target="_blank">I rant on Twitter a bit too much</a>, but if you want to <a href = "mailto:fdansv@gmail.com">email me</a> I promise I'll be nice.</p>
     </div>
     <div class = "margintooltip" style = "display:none;"></div>
     <div class = "container end"></div>
@@ -42,6 +42,7 @@
 
       $(document).ready(function () {
         var admireesJSON = $.getJSON("https://raw.githubusercontent.com/fdansv/admirees/master/admirees.json", function(data) {
+          data = data.reverse()
           var text = data.reduce(function(p,c,i){
             if (i === data.length-1){
               p += "and "
