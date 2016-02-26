@@ -37,7 +37,6 @@
       ga('create', 'UA-74092377-1', 'auto');
       ga('send', 'pageview');
 
-
       ////////////////////////////////////////////////////
 
       $(document).ready(function () {
@@ -60,7 +59,7 @@
             var parent = $(this.parentElement)
             var position = parent.position()
             var tooltip = $('.margintooltip')
-            var width = Math.min(130, position.left)
+            var width = Math.min(100, position.left)
             tooltip.css({
               top: position.top,
               left: position.left - width- 5,
