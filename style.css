@@ -51,3 +51,14 @@ pre {
 	font-family: 'EB Garamond';
 	padding-right: 7px;
 }
+
+.header {
+	position: relative;
+}
+
+.credit {
+	position: absolute;
+	bottom: 5px;
+	right: 18px;
+	color: ivory;
+}
