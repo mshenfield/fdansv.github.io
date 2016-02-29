@@ -26,17 +26,14 @@
       <p class = "admirees"></p>
       <p>Sometimes <a href = "https://twitter.com/fdans/status/615822166827765761" target="_blank">I rant on Twitter a bit too much</a>, but if you want to <a href = "mailto:fdansv@gmail.com">email me</a> I promise I'll be nice.</p>
     </div>
-    <div class = "margintooltip" style = "display:none;"></div>
     <div class = "container end"></div>
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
+    <script type="text/javascript" src="./marginotes.js"></script>
+    
+    <script src="//static.getclicky.com/js" type="text/javascript"></script>
+    <script type="text/javascript">try{ clicky.init(100929015); }catch(e){}</script>
+    <noscript><p><img alt="Clicky" width="1" height="1" src="//in.getclicky.com/100929015ns.gif" /></p></noscript>
     <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-      ga('create', 'UA-74092377-1', 'auto');
-      ga('send', 'pageview');
 
       ////////////////////////////////////////////////////
 
@@ -55,27 +52,11 @@
             return p
           }, "Here's some people doing awesome work that you may or may not have heard of, that I enjoy hearing about: ")
           $(".admirees").html(text)
-
-          $("a", ".admirees").hover(function (e) {
-            var parent = $(this.parentElement)
-            var position = parent.position()
-            var tooltip = $('.margintooltip')
-            var width = Math.min(100, position.left)
-            tooltip.css({
-              top: position.top,
-              left: position.left - width- 5,
-              "min-height": parent.height(),
-              width: width
-            })
-            tooltip.text($(this).attr("desc"))
-            tooltip.stop()
-            tooltip.fadeIn({duration:100, queue: false})
-          }, function () {
-            $('.margintooltip').stop()
-            $('.margintooltip').fadeOut({duration:100})
-          })
+          $("a", ".admirees").marginotes()
         })
       })
+
+
 
     </script>
   </body>
