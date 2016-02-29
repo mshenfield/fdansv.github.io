@@ -43,13 +43,7 @@ pre {
 	height:100px;
 }
 .margintooltip {
-	position: absolute;
-	border-right: solid 2px #337ab7;
-	width: 50px;
-	font-size: 13px;
-	text-align: right;
 	font-family: 'EB Garamond';
-	padding-right: 7px;
 }
 
 .header {
