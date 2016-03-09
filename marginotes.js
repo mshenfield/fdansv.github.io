@@ -62,8 +62,6 @@ function fadeIn(el, duration) {
 }
 
 function fadeOut(el, duration) {
-  el.style.opacity = 1;
-
   var last = +new Date();
   var tick = function() {
     el.style.opacity = +el.style.opacity - (new Date() - last) / duration;
