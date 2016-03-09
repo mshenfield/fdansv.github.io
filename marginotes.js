@@ -1,37 +1,82 @@
-var marginotes = function (options) {
+function marginotes(els, options) {
   var options = options || {}
-  $('body').append('<div class = "margintooltip" style = "display:none;"></div>')
+  var marginTooltips = document.getElementsByClassName('margintooltip')
+  var marginTooltip
+  if (marginTooltips.length === 0) {
+    marginTooltip = document.createElement('div')
+    marginTooltip.className = 'margintooltip'
+    marginTooltip.style.display = 'none'
+    document.body.appendChild(marginTooltip)
+  } else {
+    marginTooltip = marginTooltips[0]
+  }
+
   var field = options.field || "desc"
-  var spans = this.filter("span")
-  spans.css({ 'border-bottom': '1px dashed #337ab7',
-              'cursor': 'help' })
-  this.hover(function (e) {
-    var description = $(this).attr(field)
-    var parent = $(this.parentElement)
-    var position = parent.position()
-    var tooltip = $('.margintooltip')
-    var width = Math.min(options.width || 100, position.left)
-    if (width < 60 || !description) return
-    var tooltipStyle = {
-      "position": "absolute",
-      "border-right": "solid 2px #337ab7",
-      "width": "50px",
-      "font-size": "13px",
-      "text-align": "right",
-      "padding-right": "7px",
-      "top": position.top,
-      "left": position.left - width - 5,
-      "min-height": parent.height(),
-      "width": width
+  Array.prototype.forEach.call(els, function(el) {
+    if (el.tagName === 'SPAN') {
+      el.style.cssText = "border-bottom: '1px dashed #337ab7'; cursor: 'help'"
     }
-    tooltip.css(tooltipStyle)
-    tooltip.text(description)
-    tooltip.stop()
-    tooltip.fadeIn({duration:100, queue: false})
-  }, function () {
-    $('.margintooltip').stop()
-    $('.margintooltip').fadeOut({duration:100})
+    el.onmouseenter = function () {
+      var description = el.getAttribute(field)
+      var parent = el.parentElement
+      var position = {left: parent.offsetLeft, top: parent.offsetTop}
+      var width = Math.min(options.width || 100, position.left)
+      if (width < 60 || !description) return
+      marginTooltip.style.position = "absolute"
+      marginTooltip.style["border-right"] = "solid 2px #337ab7"
+      marginTooltip.style["font-size"] = "13px"
+      marginTooltip.style["text-align"] = "right"
+      marginTooltip.style["padding-right"] = "7px"
+      marginTooltip.style.top = String(position.top) + "px"
+      marginTooltip.style.left = String(position.left - width - 5) + "px"
+      marginTooltip.style["min-height"] = String(parent.clientHeight) + "px"
+      marginTooltip.style.display = "block"
+      marginTooltip.style.width = String(width) + "px"
+      marginTooltip.textContent = description
+      stopLastFadeAnimation()
+      fadeIn(marginTooltip, 100)
+    }
+    el.onmouseleave = function () {
+      stopLastFadeAnimation()
+      fadeOut(marginTooltip, 100)
+    }
   })
 }
 
-window.jQuery.prototype.marginotes = window.$.prototype.marginotes = marginotes
+/* Helpers (http://youmightnotneedjquery.com/) */
+var animationId;
+
+function fadeIn(el, duration) {
+  el.style.opacity = 0;
+  var last = +new Date();
+  var tick = function() {
+    el.style.opacity = +el.style.opacity + (new Date() - last) / duration;
+    last = +new Date();
+
+    if (+el.style.opacity < 1) {
+      animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+    }
+  };
+
+  tick();
+}
+
+function fadeOut(el, duration) {
+  el.style.opacity = 1;
+
+  var last = +new Date();
+  var tick = function() {
+    el.style.opacity = +el.style.opacity - (new Date() - last) / duration;
+    last = +new Date();
+
+    if (+el.style.opacity > 0) {
+      animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+    }
+  };
+
+  tick();
+}
+
+function stopLastFadeAnimation() {
+  (window.cancelAnimationFrame && window.cancelAnimationFrame(animationId)) || clearTimeout(animationId);
+}

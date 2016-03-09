@@ -27,7 +27,6 @@
       <p>Sometimes <a href = "https://twitter.com/fdans/status/615822166827765761" target="_blank">I rant on Twitter a bit too much</a>, but if you want to <a href = "mailto:fdansv@gmail.com">email me</a> I promise I'll be nice.</p>
     </div>
     <div class = "container end"></div>
-    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
     <script type="text/javascript" src="./marginotes.js"></script>
 
     <script src="//static.getclicky.com/js" type="text/javascript"></script>
@@ -36,28 +35,40 @@
     <script>
 
       ////////////////////////////////////////////////////
+      function ready(fn) {
+        if (document.readyState != 'loading'){
+          fn();
+        } else {
+          document.addEventListener('DOMContentLoaded', fn);
+        }
+      }
 
-      $(document).ready(function () {
-        var admireesJSON = $.getJSON("https://raw.githubusercontent.com/fdansv/admirees/master/admirees.json", function(data) {
-          data = data.reverse()
+      ready(function () {
+        var request = new XMLHttpRequest();
+        request.open('GET', 'https://raw.githubusercontent.com/fdansv/admirees/master/admirees.json', true);
+
+        request.onload = function() {
+          if (request.status < 200 || request.status >= 400) {
+            return;
+          };
+          var data = JSON.parse(request.responseText).reverse()
           var text = data.reduce(function(p,c,i){
             if (i === data.length-1){
               p += "and "
             }
-            p += '<a href = "' + c.url + '" desc = "' + c.desc + '" target="_blank">' + c.name 
+            p += '<a href = "' + c.url + '" desc = "' + c.desc + '" target="_blank">' + c.name
             if (i !== data.length-1){
               p += '</a>, '
             }
-            
+
             return p
           }, "Here's some people doing awesome work that you may or may not have heard of, that I enjoy hearing about: ")
-          $(".admirees").html(text)
-          $("a,span").marginotes()
-        })
+          document.getElementsByClassName('admirees')[0].innerHTML = text
+          marginotes(document.querySelectorAll("a,span"))
+        }
+
+        request.send()
       })
-
-
-
     </script>
   </body>
 </html>
