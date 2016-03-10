@@ -15,7 +15,8 @@ function marginotes(els, options) {
   var fader = new Fader()
   Array.prototype.forEach.call(els, function(el) {
     if (el.tagName === 'SPAN') {
-      el.style.cssText = "border-bottom: '1px dashed #337ab7'; cursor: 'help'"
+      el.style["border-bottom"] = "1px dashed #337ab7"
+      el.style["cursor"] = "help"
     }
     el.onmouseenter = function () {
       var description = el.getAttribute(field)
