@@ -12,6 +12,7 @@ function marginotes(els, options) {
   }
 
   var field = options.field || "desc"
+  var fader = new Fader()
   Array.prototype.forEach.call(els, function(el) {
     if (el.tagName === 'SPAN') {
       el.style.cssText = "border-bottom: '1px dashed #337ab7'; cursor: 'help'"
@@ -33,20 +34,20 @@ function marginotes(els, options) {
       marginTooltip.style.display = "block"
       marginTooltip.style.width = String(width) + "px"
       marginTooltip.textContent = description
-      stopLastFadeAnimation()
-      fadeIn(marginTooltip, 100)
+      fader.stop()
+      fader.fadeIn(marginTooltip, 100)
     }
     el.onmouseleave = function () {
-      stopLastFadeAnimation()
-      fadeOut(marginTooltip, 100)
+      fader.stop()
+      fader.fadeOut(marginTooltip, 100)
     }
   })
 }
 
 /* Helpers (http://youmightnotneedjquery.com/) */
-var animationId;
+var Fader = function() {}
 
-function fadeIn(el, duration) {
+Fader.prototype.fadeIn = function(el, duration) {
   el.style.opacity = 0;
   var last = +new Date();
   var tick = function() {
@@ -54,27 +55,27 @@ function fadeIn(el, duration) {
     last = +new Date();
 
     if (+el.style.opacity < 1) {
-      animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+      this.animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
     }
   };
 
   tick();
 }
 
-function fadeOut(el, duration) {
+Fader.prototype.fadeOut = function(el, duration) {
   var last = +new Date();
   var tick = function() {
     el.style.opacity = +el.style.opacity - (new Date() - last) / duration;
     last = +new Date();
 
     if (+el.style.opacity > 0) {
-      animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
+      this.animationId = (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
     }
   };
 
   tick();
 }
 
-function stopLastFadeAnimation() {
-  (window.cancelAnimationFrame && window.cancelAnimationFrame(animationId)) || clearTimeout(animationId);
+Fader.prototype.stop = function() {
+  (window.cancelAnimationFrame && window.cancelAnimationFrame(this.animationId)) || clearTimeout(this.animationId);
 }
